@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from altaz import get_altaz
+import altaz
 import requests
 from os import system
 
@@ -13,29 +13,36 @@ class Objects:
 @app.route("/", methods=['GET', 'POST'])
 def hello():
     if request.method == 'POST':
-        object = request.form['object']
-        device_id = request.form['device_id']
-        access_token = request.form['access_token']
-        address = request.form['address']
+        try:
+            if request.form['temp'] == 'List':
+                object = request.form['object_list']
+            else:
+                object = request.form['object_textbox']
 
-        # Retrieve address from google map
-        response_get = requests.get('https://maps.googleapis.com/maps/api/geocode/json',
-                        params={'address': address, 'key': API_KEY})
-        location = response_get.json()['results'][0]['geometry']['location']
+            device_id = request.form['device_id']
+            access_token = request.form['access_token']
+            address = request.form['address']
 
-        # Convert coordinates (lng, lat) --> (alt, az)
-        alt, az = get_altaz(object, location['lng'], location['lat'])
 
-        command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_alt ' \
-                                                                            '-d access_token='+str(access_token)+' ' \
-                                                                            '-d "args='+str(alt)+'"'
-        system(command)
+            # Retrieve address from google map
+            response_get = requests.get('https://maps.googleapis.com/maps/api/geocode/json',
+                            params={'address': address, 'key': API_KEY})
+            location = response_get.json()['results'][0]['geometry']['location']
 
-        command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_az ' \
-                                                                            '-d access_token='+str(access_token)+' ' \
-                                                                            '-d "args='+str(az)+'"'
-        system(command)
+            # Convert coordinates (lng, lat) --> (alt, az)
+            alt, az = get_altaz(object, location['lng'], location['lat'])
 
+            command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_alt ' \
+                                                                                '-d access_token='+str(access_token)+' ' \
+                                                                                '-d "args='+str(alt)+'"'
+            system(command)
+
+            command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_az ' \
+                                                                                '-d access_token='+str(access_token)+' ' \
+                                                                                '-d "args='+str(az)+'"'
+            system(command)
+        except:
+            print "oops."
     return render_template('index.html', objects=Objects.objects)
 
 if __name__ == "__main__":

@@ -3,10 +3,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/main.css') }}" />
-		<!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie9.css') }}" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie8.css') }}" /><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--[if lte IE 8]><script src="{{ url_for('static', filename='assets/js/ie/html5shiv.js') }}"></script><![endif]-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+<!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie9.css') }}" /><![endif]-->
+<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie8.css') }}" /><![endif]-->
 
 <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
 <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie9.css') }}" /><![endif]-->
@@ -25,4 +26,31 @@
         </div>
     </section>
 </div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/jquery.scrolly.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/jquery.dropotron.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/jquery.scrollex.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/skel.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+<!--[if lte IE 8]><script type="text/javascript" src="{{ url_for('static', filename='assets/js/ie/respond.min.js') }}"></script><![endif]-->
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+<script>
+$("#toggle").click(function() {
+  $("#object_textbox").toggle( "slow" );
+  $("#object_list").toggle( "slow" );
+  console.log("a: ");
+  console.log($("#toggle").text);
+  if ($("#temp").val() == "List"){
+    $("#temp").val("Type");
+    $("#toggle").text("I want to select from list");
+  }
+  else {
+    $("#temp").val("List");
+    $("#toggle").text("I want to type something in");
+  }
+});
+</script>
+
 </body>
