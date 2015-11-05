@@ -24,11 +24,15 @@ def hello():
         location = response_get.json()['results'][0]['geometry']['location']
 
         # Convert coordinates (lng, lat) --> (alt, az)
-        alt, az = get_altaz(object, location.lng, location.lat)
+        alt, az = get_altaz(object, location['lng'], location['lat'])
 
         command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_alt ' \
                                                                             '-d access_token='+str(access_token)+' ' \
-                                                                            '-d "args='+angle+'"'
+                                                                            '-d "args='+alt+'"'
+        command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_az ' \
+                                                                            '-d access_token='+str(access_token)+' ' \
+                                                                            '-d "args='+az+'"'
+
         system(command)
 
     return render_template('index.html', objects=Objects.objects)
