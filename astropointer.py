@@ -8,6 +8,7 @@ s = sched.scheduler(time.time, time.sleep)
 API_KEY = 'AIzaSyCY8AUysBMDz0d20GuIUaMbyJrr6pL-RYQ'
 global PROCESSES
 PROCESSES = []
+DELAY = 60
 
 app = Flask(__name__)
 
@@ -53,7 +54,7 @@ def hello():
                 os.kill(PROCESSES[0], signal.SIGKILL)
             pid = fork()
             PROCESSES.append(pid)
-            s.enter(30, 1, delta_update, (s, device_id, access_token, d_alt, d_az,))
+            s.enter(DELAY, 1, delta_update, (s, device_id, access_token, d_alt, d_az,))
             s.run()
             sys.exit()
 
@@ -71,7 +72,7 @@ def delta_update(sc, device_id, access_token, d_alt, d_az):
     system('curl https://api.particle.io/v1/devices/'+str(device_id)+'/track_az ' \
                                                                     '-d access_token='+str(access_token)+' ' \
                                                                     '-d "args='+str(d_az)+'"')
-    sc.enter(30, 1, delta_update, (sc, device_id, access_token, d_alt, d_az,))
+    sc.enter(DELAY, 1, delta_update, (sc, device_id, access_token, d_alt, d_az,))
 
 if __name__ == "__main__":
     app.run()
