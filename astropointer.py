@@ -1,12 +1,13 @@
 from flask import Flask, request, render_template
-import altaz
+from poynter_module import get_altaz, get_daltdaz
 import requests
-from os import system
+from os import system, fork
 import sched, time
 
 s = sched.scheduler(time.time, time.sleep)
 API_KEY = 'AIzaSyCY8AUysBMDz0d20GuIUaMbyJrr6pL-RYQ'
-global PROCESSES = []
+global PROCESSES
+PROCESSES = []
 
 app = Flask(__name__)
 
@@ -37,28 +38,31 @@ def hello():
             alt, az = get_altaz(object, location['lng'], location['lat'])
             # Send command to clouddy hardware for alt
             system('curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_alt ' \
-                                                                            '-d access_token='+str(access_token)+' ' \
-                                                                            '-d "args='+str(alt)+'"')
-            # Send command to clouddy hardware for az
+                   '-d access_token='+str(access_token)+' ' \
+                   '-d "args='+str(alt)+'"')
+
             system('curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_az ' \
-                                                                            '-d access_token='+str(access_token)+' ' \
-                                                                            '-d "args='+str(az)+'"')
+                   '-d access_token='+str(access_token)+' ' \
+                   '-d "args='+str(az)+'"')
 
             # Convert coordinates (lng, lat) --> (alt, az)
             d_alt, d_az = get_daltdaz(object, location['lng'], location['lat'])
+            #  d_alt, d_az = d_alt*1000, d_az*1000
+            #  print(d_alt, d_az)
             if len(PROCESSES) > 0:
                 os.kill(PROCESSES[0], signal.SIGKILL)
             pid = fork()
             PROCESSES.append(pid)
-            s.enter(60, 1, delta_update, (s, device_id, access_token, d_alt, d_az,))
+            s.enter(30, 1, delta_update, (s, device_id, access_token, d_alt, d_az,))
             s.run()
             sys.exit()
 
         except:
-            print "oops."
+            print("oops.")
     return render_template('index.html', objects=Objects.objects)
 
 def delta_update(sc, device_id, access_token, d_alt, d_az):
+    print('delta_update...')
     # Send command to clouddy hardware for alt
     system('curl https://api.particle.io/v1/devices/'+str(device_id)+'/track_alt ' \
                                                                     '-d access_token='+str(access_token)+' ' \
