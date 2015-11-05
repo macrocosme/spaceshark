@@ -26,6 +26,7 @@ def get_altaz(obj_name, ipt_lon, ipt_lat, t=None):
 	import requests
 	import json
 
+	import numpy as np
 	import astropy.units as u
 	from astropy.time import Time
 	from astropy.coordinates import SkyCoord, EarthLocation, Angle, Latitude, Longitude
@@ -47,7 +48,8 @@ def get_altaz(obj_name, ipt_lon, ipt_lat, t=None):
 
 	#observer for pyephem
 	ephem_site = ephem.Observer()
-	ephem_site.lon, ephem_site.lat = str(obs_lon.deg), str(obs_lat.deg)
+	#ephem_site.lon, ephem_site.lat = str(obs_lon.deg), str(obs_lat.deg)
+	ephem_site.lon, ephem_site.lat = obs_lon.deg/np.pi, obs_lat.deg/np.pi
 	ephem_site.date=ephem.Date(t.jd)
 
 
@@ -74,7 +76,7 @@ def get_altaz(obj_name, ipt_lon, ipt_lat, t=None):
 		elif obj_name == "jupiter": my_planet = ephem.Jupiter()
 		elif obj_name == "saturn":  my_planet = ephem.Saturn()
 		elif obj_name == "uranus":  my_planet = ephem.Uranus()
-		elif obj_name == "peptune": my_planet = ephem.Neptune()
+		elif obj_name == "neptune": my_planet = ephem.Neptune()
 		elif obj_name == "pluto":   my_planet = ephem.Pluto()
     
 		my_planet.compute(ephem_site)
