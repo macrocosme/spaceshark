@@ -28,11 +28,12 @@ def hello():
 
         command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_alt ' \
                                                                             '-d access_token='+str(access_token)+' ' \
-                                                                            '-d "args='+alt+'"'
+                                                                            '-d "args='+str(alt)+'"'
+        system(command)
+
         command = 'curl https://api.particle.io/v1/devices/'+str(device_id)+'/point_az ' \
                                                                             '-d access_token='+str(access_token)+' ' \
-                                                                            '-d "args='+az+'"'
-
+                                                                            '-d "args='+str(az)+'"'
         system(command)
 
     return render_template('index.html', objects=Objects.objects)
