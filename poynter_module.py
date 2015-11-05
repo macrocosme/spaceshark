@@ -49,7 +49,6 @@ def get_altaz(obj_name, ipt_lon, ipt_lat, t=None):
 	ephem_site = ephem.Observer()
 	ephem_site.lon, ephem_site.lat = str(obs_lon.deg), str(obs_lat.deg)
 	ephem_site.date=ephem.Date(str(t.decimalyear))
-	print ephem_site.date, str(t.decimalyear)
 
 	##Get the object
 	#Check for planet-hood.
