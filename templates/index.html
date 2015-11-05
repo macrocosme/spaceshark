@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block body %}
+  <form action="{{ url_for('hello') }}" method="post">
+    <dl>
+        <dt>Object:</dt>
+        <dd>
+            <select name="object">
+                {% for object in objects %}
+                    <option value="{{ object }}">{{ object }}</option>
+                {% else %}
+                    <li><em>Unbelievable.  No objects here so far</em>
+                {% endfor %}
+            </select>
+        </dd>
+        <dt>Device ID:</dt>
+        <dd><input type="text" name="device_id" value="3d002d000547343337373738"></dd>
+        <dt>Access token:</dt>
+        <dd><input type="text" name="access_token" value="05c8d0ed4a5cfa954fd36f36770892381b27bf87"></dd>
+        <dt>Your location:</dt>
+        <dd><input type="text" name="address" value="Parkville,Melbourne,Australia"></dd>
+        <dd><input type="submit" value="POINT!"></dd>
+    </dl>
+  </form>
+{% endblock %}

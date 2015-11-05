@@ -1,0 +1,28 @@
+<!doctype html>
+<title>#AstroPointer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+		<!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie9.css') }}" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie8.css') }}" /><![endif]-->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+<!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie9.css') }}" /><![endif]-->
+<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/ie8.css') }}" /><![endif]-->
+
+<body class="landing">
+<div id="page-wrapper">
+    <section id="banner">
+        <div class="content">
+            <header>
+              <h2>#AstroPointer</h2>
+              <p>Choose your object and look where the arrow is pointing.</p>
+              {% block body %}{% endblock %}
+            </header>
+            <span class="image"><img src="{{ url_for('static', filename='images/astropointer_sketch.jpg') }}" alt="" /></span>
+        </div>
+    </section>
+</div>
+</body>
