@@ -40,7 +40,6 @@ def point():
         access_token = request.args.get('access_token')
         address = request.args.get('address')
 
-        """
         # Retrieve address from google map
         response_get = requests.get('https://maps.googleapis.com/maps/api/geocode/json',
                         params={'address': address, 'key': API_KEY})
@@ -61,7 +60,7 @@ def point():
         d_alt, d_az = get_daltdaz(object, location['lng'], location['lat'])
         #  d_alt, d_az = d_alt*1000, d_az*1000
         #  print(d_alt, d_az)
-        """
+
 
         if len(PROCESSES) > 0:
             for process in PROCESSES:
@@ -72,8 +71,7 @@ def point():
                 except OSError, e:
                     print "error: ", e.errno
 
-        #p = Popen(['python', 'astropointer.py', str(device_id), str(access_token), str(d_alt), str(d_az), str(DELAY)])
-        p = Popen(['python', 'astropointer.py', str(device_id), str(access_token), str(1), str(1), str(DELAY)])
+        p = Popen(['python', 'astropointer.py', str(device_id), str(access_token), str(d_alt), str(d_az), str(DELAY)])
 
         PROCESSES.append(p.pid)
     except:
@@ -83,12 +81,8 @@ def point():
 
 def delta_update(device_id, access_token, d_alt, d_az, delay):
     print('delta_update...')
-    print(rand)
+    #print(rand)
 
-    #time.sleep(delay)
-    time.sleep(1.)
-    delta_update(device_id, access_token, d_alt, d_az, delay)
-    """
     # Send command to clouddy hardware for alt
     system('curl https://api.particle.io/v1/devices/'+str(device_id)+'/track_alt ' \
                                                                     '-d access_token='+str(access_token)+' ' \
@@ -97,7 +91,10 @@ def delta_update(device_id, access_token, d_alt, d_az, delay):
     system('curl https://api.particle.io/v1/devices/'+str(device_id)+'/track_az ' \
                                                                     '-d access_token='+str(access_token)+' ' \
                                                                     '-d "args='+str(d_az)+'"')
-    """
+
+    time.sleep(delay)
+    delta_update(device_id, access_token, d_alt, d_az, delay)
+
     #sc.enter(delay, 1, delta_update, (sc, device_id, access_token, d_alt, d_az,))
 
 if __name__ == "__main__":
