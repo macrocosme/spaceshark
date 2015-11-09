@@ -20,7 +20,28 @@
             <header>
               <h2>#AstroPointer</h2>
               <p>Choose your object and look where the arrow is pointing.</p>
-              {% block body %}{% endblock %}
+              <dl>
+                <dt>Object:</dt>
+                <dd>
+                    <select name="object_list" id="object_list">
+                        {% for object in objects %}
+                            <option value="{{ object }}">{{ object }}</option>
+                        {% else %}
+                            <li><em>Unbelievable.  No objects here so far</em>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="object_textbox" id="object_textbox" style="display: none" />
+                    <input type="text" name="temp" id="temp" value="List" style="display: none" />
+                    <a href="#" id="toggle" name="toggle">I want to type something in</a>
+                </dd>
+                <dt>Device ID:</dt>
+                <dd><input type="text" name="device_id" id="device_id" value="3d002d000547343337373738" /></dd>
+                <dt>Access token:</dt>
+                <dd><input type="text" name="access_token" id="access_token" value="05c8d0ed4a5cfa954fd36f36770892381b27bf87" /></dd>
+                <dt>Your location:</dt>
+                <dd><input type="text" name="address" id="address" value="Parkville,Melbourne,Australia" /></dd>
+                <dd><input type="submit" id="button" value="POINT!"></dd>
+            </dl>
             </header>
             <span class="image"><img src="{{ url_for('static', filename='images/astropointer_sketch.jpg') }}" alt="" /></span>
         </div>
@@ -60,5 +81,31 @@ $("#toggle").click(function() {
   }
 });
 </script>
+
+<script type=text/javascript>
+    $(function() {
+      $('#button').bind('click', function() {
+        console.log($('#object_list').val());
+        console.log($('#object_textbox').val());
+        console.log($('#temp').val());
+        console.log($('#device_id').val());
+        console.log($('#access_token').val());
+        console.log($('#address').val());
+
+        $.getJSON('/_point',
+        {
+          object_list: $('#object_list').val(),
+          object_textbox: $('#object_textbox').val(),
+          temp: $('#temp').val(),
+          device_id: $('#device_id').val(),
+          access_token: $('#access_token').val(),
+          address: $('#address').val(),
+        }, function(data) {
+          //alert("ok!");
+        });
+        return false;
+      });
+    });
+  </script>
 
 </body>
